@@ -7,6 +7,7 @@ export const Container = Styled.div`
   border: 2px solid #232129;
   width: 100%;
   color: #666360;
+  padding: 10px;
 
   display: flex;
   align-items: center;
@@ -26,7 +27,7 @@ export const Container = Styled.div`
   }
 
   svg {
-    margin-right: 0px;
+    margin-right: 10px;
 
   }
 
