@@ -11,6 +11,7 @@ export const Container = Styled.button`
     width: 100%;
     font-weight: 500;
     margin-top: 16px;
+    cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
