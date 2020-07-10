@@ -19,7 +19,7 @@ export const Content = Styled.div`
 
   width: 100%
   max-width: 700px;
-  margin: 0 50px 0 20px;
+  margin: 0 150px 0 150px;
 
   form {
     margin-top: 80px;
