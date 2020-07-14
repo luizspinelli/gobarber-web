@@ -1,42 +1,19 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { FiAlertCircle, FiXCircle } from 'react-icons/fi';
 
-import { Container, Toast } from './styles';
+import { Container } from './styles';
+import Toast from './Toast';
+import { ToastMessage } from '../../hooks/toast';
 
-const ToastContainer: React.FC = () => (
+interface ToastContainerProps {
+  messages: ToastMessage[]
+}
+
+const ToastContainer: React.FC<ToastContainerProps> = ({ messages }) => (
   <Container>
-    <Toast hasDescripion>
-      <FiAlertCircle size={20} />
-      <div>
-        <strong>Aconteceu um erro</strong>
-        <p>Erro na autenticação do usuario</p>
-      </div>
-      <button type="button">
-        <FiXCircle size={18} />
-      </button>
-    </Toast>
-
-    <Toast type="success" hasDescripion={false}>
-      <FiAlertCircle size={20} />
-      <div>
-        <strong>Aconteceu um erro</strong>
-      </div>
-      <button type="button">
-        <FiXCircle size={18} />
-      </button>
-    </Toast>
-
-    <Toast type="error" hasDescripion>
-      <FiAlertCircle size={20} />
-      <div>
-        <strong>Aconteceu um erro</strong>
-        <p>Erro na autenticação do usuario</p>
-      </div>
-      <button type="button">
-        <FiXCircle size={18} />
-      </button>
-    </Toast>
+    {messages.map((message) => (
+      <Toast key={message.id} message={message} />
+    ))}
   </Container>
 );
-
 export default ToastContainer;
