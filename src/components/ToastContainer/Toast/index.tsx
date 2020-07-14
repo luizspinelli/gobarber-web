@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
-  FiAlertCircle, FiXCircle, FiCheckCircle, FiInfo,
-} from 'react-icons/fi';
+  FiAlertCircle,
+  FiXCircle,
+  FiCheckCircle,
+  FiInfo,
+} from "react-icons/fi";
 
-import { Container } from './styles';
+import { Container } from "./styles";
 
-import { ToastMessage, useToast } from '../../../hooks/toast';
+import { ToastMessage, useToast } from "../../../hooks/toast";
 
 interface ToastProps {
-  message: ToastMessage
+  message: ToastMessage;
   style: object;
 }
 
@@ -34,8 +37,12 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
   }, [message.id, removeToast]);
 
   return (
-    <Container type={message.type} hasDescripion={!!message.description} style={style}>
-      {icons[message.type || 'info']}
+    <Container
+      type={message.type}
+      hasDescripion={!!message.description}
+      style={style}
+    >
+      {icons[message.type || "info"]}
       <div>
         <strong>{message.title}</strong>
         {message.description && <p>{message.description}</p>}
