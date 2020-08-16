@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
@@ -12,12 +12,14 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import getValidationErrors from "../../utils/getValidationErrors";
 import { useToast } from "../../hooks/toast";
+import api from "../../services/api";
 
 interface ForgotPasswordFormData {
   email: string;
 }
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
@@ -26,6 +28,8 @@ const ForgotPassword: React.FC = () => {
   const handleSubmit = useCallback(
     async (data: ForgotPasswordFormData) => {
       try {
+        setLoading(true);
+
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({
           email: Yup.string()
@@ -38,6 +42,17 @@ const ForgotPassword: React.FC = () => {
         });
 
         // recuperação de senha
+
+        await api.post("/password/forgot", {
+          email: data.email,
+        });
+
+        addToast({
+          type: "success",
+          title: "E-mail de recuperação enviado",
+          description:
+            "Enviamos um email para confirmar a recuperação de senha, cheque a caixa de entrada",
+        });
 
         // history.push("/dashboard");
       } catch (error) {
@@ -53,6 +68,8 @@ const ForgotPassword: React.FC = () => {
             "Ocorreu um erro ao tentar realizar a recuperação de senha, tente novamente",
           type: "error",
         });
+      } finally {
+        setLoading(false);
       }
     },
     [addToast]
@@ -66,7 +83,9 @@ const ForgotPassword: React.FC = () => {
             <h1>Recuperar Senha</h1>
             <Input name="email" icon={FiMail} placeholder="Email" />
 
-            <Button type="submit">Recuperar</Button>
+            <Button loading={loading} type="submit">
+              Recuperar
+            </Button>
           </Form>
 
           <Link to="/">
