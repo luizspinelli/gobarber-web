@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useCallback, useRef, useState } from "react";
-import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
+import { FiLogIn, FiMail } from "react-icons/fi";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
 import { FormHandles } from "@unform/core";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, Content, Background, AnimationContainer } from "./styles";
 import logo from "../../assets/logo.svg";
 import Input from "../../components/Input";
