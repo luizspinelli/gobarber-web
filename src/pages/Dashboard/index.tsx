@@ -8,6 +8,7 @@ import ptBr from "date-fns/locale/pt-BR";
 import { FiPower, FiClock } from "react-icons/fi";
 
 import { parseISO } from "date-fns/esm";
+import { Link } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 
 import {
@@ -82,7 +83,6 @@ const Dashboard: React.FC = () => {
       })
       .then((response) => {
         setAppointments(response.data);
-        console.log(response.data);
       });
   }, [selectedDate]);
 
@@ -134,13 +134,12 @@ const Dashboard: React.FC = () => {
         <HeaderContent>
           <img src={logoImg} alt="GoBarber" />
           <Profile>
-            <img
-              src="https://avatars3.githubusercontent.com/u/57016585?s=460&u=5e21f897d2ab550c9ac2ca6abdb58d7fde8f67cb&v=4"
-              alt={user.name}
-            />
+            <img src={user.avatar_url} alt={user.name} />
             <div>
               <span>Bem Vindo</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
           <button type="button" onClick={signOut}>
