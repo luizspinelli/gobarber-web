@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useCallback, useRef, ChangeEvent } from "react";
@@ -18,7 +19,9 @@ import { Container, Content, AvatarInput } from "./styles";
 interface ProfileFormData {
   name: string;
   email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
@@ -37,33 +40,56 @@ const Profile: React.FC = () => {
           email: Yup.string()
             .required("Email Obrigatório")
             .email("Digite um email valido"),
-          password: Yup.string().min(6, "No mínimo 6 dígitos"),
+          old_password: Yup.string(),
+          password: Yup.string().when("old_password", {
+            is: (val) => !!val.length,
+            then: Yup.string().min(6, "No mínimo 6 dígitos"),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref("password"), undefined],
+            "Confirmação incorreta"
+          ),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post("/users", data);
+        const formData = {
+          name: data.name,
+          email: data.email,
+          ...(data.old_password
+            ? {
+                old_password: data.old_password,
+                password: data.password,
+                password_confirmation: data.password_confirmation,
+              }
+            : {}),
+        };
+
+        const response = await api.put("/profile", formData);
+
+        updateUser(response.data);
 
         history.push("/");
 
         addToast({
-          title: "Cadastro realizado",
-          description: "Você ja pode fazer o seu logon",
+          title: "Perfil atualizado",
+          description: "O seu perfil foi atualizado",
           type: "success",
         });
       } catch (error) {
         formRef.current?.setErrors(getValidationErrors(error));
 
         addToast({
-          title: "Erro ao realizar cadastro",
+          title: "Erro ao atualizar cadastro",
           description: "Verifique os erros indicados",
           type: "error",
         });
       }
     },
-    [addToast, history]
+    [addToast, history, updateUser]
   );
 
   const handleAvatarChange = useCallback(
